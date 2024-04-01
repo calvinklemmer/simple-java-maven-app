@@ -1,3 +1,4 @@
+// version 1.1
 pipeline {
     agent any {
     stages {
@@ -18,7 +19,13 @@ pipeline {
         }
         stage('Deliver') {
             steps {
-                bat './jenkins/scripts/deliver.*'
+                script {
+                    if (isUnix()) {
+                        sh './jenkins/scripts/deliver.sh'
+                    } else {
+                        bat 'powershell -File .\\jenkins\\scripts\\deliver.ps1'
+                    }
+                }
             }
         }
     }
